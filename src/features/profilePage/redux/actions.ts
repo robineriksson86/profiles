@@ -1,0 +1,1 @@
+export { fetchProfiles } from './fetchProfiles';
