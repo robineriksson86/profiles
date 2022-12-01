@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import ProfileCard from './ProfileCard'
-import { fetchProfiles, loadMoreProfiles } from './redux/fetchProfiles'
+import { fetchProfiles, clearProfiles } from './redux/fetchProfiles'
 
 
 const ProfilePage = ({ }) => {
@@ -9,19 +9,18 @@ const ProfilePage = ({ }) => {
     const [fetchAmountOfProfiles, setFetchAmountOfProfiles] = useState(10);
 
     useEffect(() => {
-        dispatch(fetchProfiles())
+        dispatch(fetchProfiles(10))
     }, []);
     const { profiles } = useAppSelector(state => state.profile);
 
     const onClickFetchAmount = (amount: number) => {
         setFetchAmountOfProfiles(amount)
-        //dispatch(fetchProfiles(amount))
+        dispatch(clearProfiles())
+        dispatch(fetchProfiles(amount))
     }
 
     const onClickFetchMore = () => {
-        console.log("fetch more", fetchAmountOfProfiles)
-        //dispatch(fetchProfiles(amount))
-        //dispatch(loadMoreProfiles(profiles))
+        dispatch(fetchProfiles(fetchAmountOfProfiles))
     }
 
     return (
@@ -36,15 +35,20 @@ const ProfilePage = ({ }) => {
                 </div>
             </div>
             <h1>Secret Profiles</h1>
-            <div className="wrapper">
-                {
-                    profiles?.map((profile, index) => (
-                        <ProfileCard profile={profile} key={index} />
-                    ))}
-            </div>
-            <div className="bottom-wrapper">
-                <button onClick={() => { onClickFetchMore() }}>{`Load ${fetchAmountOfProfiles} more profiles`}</button>
-            </div>
+            {profiles.length === 0 ? <div>No Results</div>
+                :
+                <>
+                    <div className="wrapper">
+                        {
+                            profiles?.map((profile, index) => (
+                                <ProfileCard profile={profile} key={index} />
+                            ))}
+                    </div>
+                    <div className="bottom-wrapper">
+                        <button onClick={() => { onClickFetchMore() }}>{`Load ${fetchAmountOfProfiles} more profiles`}</button>
+                    </div>
+                </>
+            }
         </div>
     );
 };

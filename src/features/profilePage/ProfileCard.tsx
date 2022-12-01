@@ -1,6 +1,5 @@
 import React from 'react';
 import { ProfileType } from '../profilePage/constants/types'
-import profile_pic from './constants/profile_pic.jpg'
 import moment from 'moment'
 
 type Props = {
@@ -12,8 +11,7 @@ const ProfileCard = ({ profile }: Props) => {
     const dobDate = moment(date).format("YYYY-MM-DD")
     return (
         <div className="profile-card">
-            {/*  <img src={picture.large} /> */}
-            <img src={profile_pic} />
+            <img src={picture.large} />
             <div className="profile-content">
                 <div>
                     <b>Name:</b> {`${title} ${first} ${last}`}
